@@ -4,6 +4,7 @@
 import React, {createRef} from "react";
 import {API_KEY} from "../resources/Keys"
 import {COUNTRIES} from "../resources/MockData";
+import DataService from "../services/DataService"
 
 class MapComponent extends React.Component {
     constructor(props) {
@@ -63,7 +64,7 @@ class MapComponent extends React.Component {
                     infowindow.open(map, marker);
                 })
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                console.log('Geocode was not successful for the following reason: ' + status);
             }
         });
     }
@@ -78,14 +79,25 @@ class MapComponent extends React.Component {
             this.googleMap = this.createGoogleMap();
 
             let geocoder = new window.google.maps.Geocoder();
+            const TEMP_VIEWS = 330000;
 
             // TODO: Get data
-            let countries = COUNTRIES;
+            // let countries = COUNTRIES;
+            // for (let country in countries) {
+            //     this.createMarker(this.googleMap, geocoder, country, COUNTRIES[country]);
+            // }
 
-            // Add markers
-            for (let country in countries) {
-                this.createMarker(this.googleMap, geocoder, country, countries[country]);
-            }
+            DataService.getCountries().then(
+                response => {
+                    let countries = response.data;
+
+                    // Add markers
+                    for (let country in countries) {
+                        console.log("Name: " + countries[country].name);
+                        this.createMarker(this.googleMap, geocoder, countries[country].name, TEMP_VIEWS);
+                    }
+                }
+            )
         })
     }
 
