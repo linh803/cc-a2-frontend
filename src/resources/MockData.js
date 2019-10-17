@@ -8,11 +8,30 @@ export const COUNTRIES = {
 
 export const VIDEOS = {
     "Australia": {
-        "A1": 100,
-        "A2": 200
+        "hY7m5jjJ9mM": {
+            name: "Some Cat Video"
+        },
+        "hk__iTDn9E0": {
+            name: "Some Other Cat Video"
+        }
     },
     "China": {
-        "C1": 2000,
-        "C2": 3000
+        "hY7m5jjJ9mM": {
+            name: "Some Cat Video"
+        },
+        "hk__iTDn9E0": {
+            name: "Some Other Cat Video"
+        }
     }
 }
+
+export const VIDEO_DETAILS = [
+    {
+        date: new Date(2015, 1, 1),
+        views: 12
+    },
+    {
+        date: new Date(2014, 1, 1),
+        views: 28
+    }
+]

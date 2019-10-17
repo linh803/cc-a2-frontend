@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import NavComponent from "./core/NavComponent.jsx";
 import MapComponent from "./map/MapComponent.jsx";
 import HistoryComponent from "./history/HistoryComponent.jsx";
+import GraphComponent from "./history/GraphComponent.jsx";
 
 import './App.css';
 
@@ -14,8 +15,9 @@ class App extends React.Component {
                 <NavComponent />
                 <Switch>
                     <Route path="/" exact component={MapComponent} />
-                    <Route path="/map" component={MapComponent} />
-                    <Route path="/history" component={HistoryComponent} />
+                    <Route path="/map" exact component={MapComponent} />
+                    <Route path="/history" exact component={HistoryComponent} />
+                    <Route path="/history/:vid" exact component={GraphComponent} />
                 </Switch>
             </Router>
         );
