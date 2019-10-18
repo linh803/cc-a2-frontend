@@ -14,83 +14,58 @@ class HistoryComponent extends React.Component {
             form: {
                 country: "",
                 countries: []
-            }
+            },
+            videos: []
         }
 
-        this.renderVideos = this.renderVideos.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         // Init list of countries
-        DataService.getCountries().then(
-            response => {
-                this.setState({
-                    form: {
-                        countries: response.data
-                    }
-                });
-            }
-        );
-    }
-
-    // Every trending videos of the selected country
-    renderVideos() {
-        let videos = [];
-
-        DataService.getAllTrendingVideos(this.state.cid).then(
-            response => {
-                const VIDEOS = response.data;
-
-                // TODO: VideoComponent
-                if (VIDEOS != null) {
-                    for (let video in VIDEOS) {
-                        videos.push(
-                            <div key={video.id} className="col-lg-6 mt-2 mb-2">
-                                <Link to=
-                                    {{
-                                        pathname: `/history/${video.id}`,
-                                        state: {
-                                            name: video.name
-                                        }
-                                    }}
-                                >
-                                    <div className="card">
-                                        <iframe className="card-img-top"
-                                            title={video.id}
-                                            width="560" height="315"
-                                            src={`https://www.youtube.com/embed/${video.id}`}
-                                            frameBorder="0"
-                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                        >
-                                        </iframe>
-                                        <div className="card-body">
-                                            <div className="card-text">{video.name}</div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-                        );
-                    }
+        console.log("State: " + this.state.form.countries);
+        // if (this.state.form.countries.length == 0) {
+            DataService.getCountries().then(
+                response => {
+                    this.setState({
+                        form: {
+                            countries: response.data
+                        }
+                    });
                 }
-            }
-        )
-
-        return videos;
+            );
+        // }
     }
 
     // Update state according to user input
     handleChange(event) {
-        let countries = this.state.form.countries;
-        this.setState({
-            cid: event.target.key,
-            form: {
-                country: event.target.value,
-                countries: countries
-            }
-        });
+        // let countries = this.state.form.countries;
+        // let videos = this.state.videos;
+        //
+        // this.setState({
+        //     cid: event.target.value.split("-")[0],
+        //     form: {
+        //         country: event.target.value,
+        //         countries: countries
+        //     },
+        //     videos: videos
+        // });
+
+        if (event.target.value != null) {
+            // Set cid and update videos
+            let cid = event.target.value.split("-")[0];
+
+            DataService.getAllTrendingVideos(cid).then(
+                response => {
+                    let videos = response.data;
+
+                    this.setState({
+                        videos: videos
+                    })
+                }
+            );
+        }
     }
 
     handleSubmit(event) {
@@ -101,8 +76,6 @@ class HistoryComponent extends React.Component {
     }
 
     render() {
-        let videos = this.renderVideos();
-
         return (
             <div>
                 {/*Form*/}
@@ -115,7 +88,8 @@ class HistoryComponent extends React.Component {
                                         {
                                             this.state.form.countries.map(
                                                 country => {
-                                                    return <option key={country.cid} value={country.name} />
+                                                    let value = `${country.cid-country.name}`;
+                                                    return <option key={country.cid} value={`${country.cid}-${country.name}`} />
                                                 }
                                             )
                                         }
@@ -132,7 +106,48 @@ class HistoryComponent extends React.Component {
                 {/*Videos*/}
                 <div className="container-fluid">
                     <div className="row">
-                        {videos}
+                        {
+                            this.state.videos.map(
+                                video => {
+                                    let thumb_url = "http://img.youtube.com/vi/" + video.vid + "/maxresdefault.jpg";
+
+                                    console.log(video);
+                                    return (
+                                        <div key={video.vid} className="col-lg-6 mt-2 mb-2">
+                                            <Link to=
+                                                {{
+                                                    pathname: `/history/${video.vid}`,
+                                                    state: {
+                                                        name: "Video"
+                                                    }
+                                                }}
+                                            >
+                                                <div className="card">
+                                                    {/*Embedded video
+                                                    <iframe className="card-img-top"
+                                                        title={video.vid}
+                                                        width="560" height="315"
+                                                        src={`https://www.youtube.com/embed/${video.vid}`}
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    >
+                                                    </iframe>
+                                                    */}
+
+                                                    <img className="card-img-top" src={thumb_url}/>
+
+                                                    {/*Title*/}
+                                                    <div className="card-body">
+                                                        <div className="card-text">Video</div>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    )
+                                }
+                            )
+                        }
                     </div>
                 </div>
             </div>

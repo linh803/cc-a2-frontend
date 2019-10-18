@@ -8,15 +8,15 @@ class DataService {
     }
 
     getTopTrendingVideos(cid) {
-        return axios.get(`${URL}/toptrendingvideos?${cid}`);
+        return axios.get(`${URL}/toptrendingvideos?cid=${cid}`);
     }
 
     getAllTrendingVideos(cid) {
-        return axios.get(`${URL}/alltrendingvideos?${cid}`);
+        return axios.get(`${URL}/alltrendingvideos?cid=${cid}`);
     }
 
     getVideoDetails(vid) {
-        return axios.get(`${URL}/videoviews?${vid}`);
+        return axios.get(`${URL}/videoviews?vid=${vid}`);
     }
 }
 
