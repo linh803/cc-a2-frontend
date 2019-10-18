@@ -21,52 +21,48 @@ class MapComponent extends React.Component {
         return new window.google.maps.Map(this.state.googleMapRef.current, {
             zoom: 3,
             center: {
-                lat: 43.642567,
-                lng: -79.387054,
+                lat: -33.865143,
+                lng: 151.209900,
             },
             disableDefaultUI: true
         })
     }
 
-    createMarker(map, geocoder, country, views){
-        geocoder.geocode({'address': country}, (results, status) => {
-            if (status === 'OK') {
-                // Set scale
-                const DEFAULT_SCALE = 1/100000;
-                const MIN_SCALE = 10;
-                const MAX_SCALE = 50;
-                let scale = DEFAULT_SCALE * views;
-                if (scale > MAX_SCALE) {
-                    scale = MAX_SCALE;
-                } else if (scale < MIN_SCALE) {
-                    scale = MIN_SCALE;
-                }
+    createMarker(map, country, position, views){
+        // Set scale
+        const DEFAULT_SCALE = 1/100000;
+        const MIN_SCALE = 10;
+        const MAX_SCALE = 50;
+        let scale = DEFAULT_SCALE * views;
+        if (scale > MAX_SCALE) {
+            scale = MAX_SCALE;
+        } else if (scale < MIN_SCALE) {
+            scale = MIN_SCALE;
+        }
 
-                let infowindow = new window.google.maps.InfoWindow({
-                    content: "Meh"
-                });
+        // let infowindow = new window.google.maps.InfoWindow({
+        //     content: "Meh"
+        // });
 
-                let marker = new window.google.maps.Marker({
-                    position: results[0].geometry.location,
-                    map: map,
-                    title: views + " views",
-                    icon: {
-                        path: window.google.maps.SymbolPath.CIRCLE,
-                        fillColor: "red",
-                        fillOpacity: 0.2,
-                        strokeWeight: 0,
-                        scale: scale
-                    }
-                });
 
-                // TODO: addEventListener OR tooltip OR something else that i don't remember the name of
-                marker.addListener("click", () => {
-                    infowindow.open(map, marker);
-                })
-            } else {
-                console.log('Geocode was not successful for the following reason: ' + status);
+        let marker = new window.google.maps.Marker({
+            position: position,
+            map: map,
+            title: views + " views",
+            icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                fillColor: "red",
+                fillOpacity: 0.2,
+                strokeWeight: 0,
+                scale: scale
             }
         });
+
+        // TODO: addEventListener OR tooltip OR something else that i don't remember the name of
+        marker.addListener("click", () => {
+            // infowindow.open(map, marker);
+            // Show trending videos
+        })
     }
 
     componentDidMount() {
@@ -78,14 +74,7 @@ class MapComponent extends React.Component {
         googleScript.addEventListener("load", () => {
             this.googleMap = this.createGoogleMap();
 
-            let geocoder = new window.google.maps.Geocoder();
             const TEMP_VIEWS = 330000;
-
-            // TODO: Get data
-            // let countries = COUNTRIES;
-            // for (let country in countries) {
-            //     this.createMarker(this.googleMap, geocoder, country, COUNTRIES[country]);
-            // }
 
             DataService.getCountries().then(
                 response => {
@@ -93,8 +82,11 @@ class MapComponent extends React.Component {
 
                     // Add markers
                     for (let country in countries) {
-                        console.log("Name: " + countries[country].name);
-                        this.createMarker(this.googleMap, geocoder, countries[country].name, TEMP_VIEWS);
+                        let position = {
+                            lat: parseFloat(countries[country].latitude),
+                            lng: parseFloat(countries[country].longitude)
+                        }
+                        this.createMarker(this.googleMap, countries[country].name, position, TEMP_VIEWS);
                     }
                 }
             )
