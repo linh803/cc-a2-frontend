@@ -43,7 +43,7 @@ Before starting, ensure that you have a Google account and have created a billin
     - `<ENDPOINTS_API_SERVICE>` = URL to the endpoints API service, obtained by deploying the backend (see the link in **About**).
 
 ### Run the project locally
-1. Runs the app in the development mode:
+1. Run the app in the development mode:
     - `npm start`
 2. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
