@@ -29,15 +29,17 @@ class GraphComponent extends React.Component {
     render() {
         // data
         let data = [['time', 'views']];
-
         for (let index in this.state.videoViews) {
             data.push([this.state.videoViews[index].date, this.state.videoViews[index].views]);
         }
 
         return (
-            <div>
-                <h1>{this.state.name}</h1>
+            <div className="container-fluid">
+                {/*Video info*/}
+                <h3>{this.state.name}</h3>
+                <a target="_blank" href={`https://youtu.be/${this.state.vid}`}>See video</a>
 
+                {/*Chart*/}
                 <Chart
                     width={Window.width}
                     height={'400px'}
@@ -46,7 +48,7 @@ class GraphComponent extends React.Component {
                     data={data}
                     options={{
                         hAxis: {
-                        title: 'Time',
+                            title: 'Time',
                         },
                         vAxis: {
                             title: 'Views',

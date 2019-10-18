@@ -37,9 +37,9 @@ class HistoryComponent extends React.Component {
     // Update state according to user input
     handleChange(event) {
         if (event.target.value != null) {
-            // Set cid and update videos
             let cid = event.target.value.split("-")[0];
 
+            // Update videos
             DataService.getAllTrendingVideos(cid).then(
                 response => {
                     let videos = response.data;
@@ -63,31 +63,31 @@ class HistoryComponent extends React.Component {
         return (
             <div>
                 {/*Form*/}
-                <div className="container-fluid">
+                <div className="container-fluid mt-2">
                     <form onSubmit={this.handleSubmit}>
-                        <div className="form-row">
-                            <div className="col">
-                                <input list="countries" type="text" className="form-control form-control-lg mr-2" placeholder="Enter a country :)" onChange={this.handleChange} />
-                                    <datalist id="countries">
-                                        {
-                                            this.state.form.countries.map(
-                                                country => {
-                                                    return <option key={country.cid} value={`${country.cid} - ${country.name}`} />
-                                                }
-                                            )
-                                        }
-                                    </datalist>
-                            </div>
+                        <div className="input-group">
+                            {/*Countries*/}
+                            <input list="countries" type="text" className="form-control form-control-lg mr-2" placeholder="Enter a country ヽ(・∀・)ﾉ" onChange={this.handleChange} />
+                                <datalist id="countries">
+                                    {
+                                        this.state.form.countries.map(
+                                            country => {
+                                                return <option key={country.cid} value={`${country.cid} - ${country.name}`} />
+                                            }
+                                        )
+                                    }
+                                </datalist>
 
-                            <div className="col">
+                            {/*Submit*/}
+                            <span class="input-group-btn">
                                 <button type="submit" className="btn btn-primary btn-lg">Show Videos</button>
-                            </div>
+                            </span>
                         </div>
-                        </form>
+                    </form>
                 </div>
 
                 {/*Videos*/}
-                <div className="container-fluid">
+                <div className="container-fluid mt-2">
                     <div className="row">
                         {
                             this.state.videos.map(

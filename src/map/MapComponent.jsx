@@ -77,8 +77,8 @@ class MapComponent extends React.Component {
         googleScript.addEventListener("load", () => {
             this.googleMap = this.createGoogleMap();
 
-            // Placeholder for toal views
-            const TEMP_VIEWS = 330000;
+            // Placeholder for total views
+            const TEMP_VIEWS = 1000000;
 
             // Get countries
             DataService.getCountries().then(
@@ -96,10 +96,6 @@ class MapComponent extends React.Component {
                 }
             )
         })
-
-        // window.onresize = () => {
-        //     this.setState();
-        // }
     }
 
     render() {
@@ -115,9 +111,9 @@ class MapComponent extends React.Component {
                 {/*Display video if a country is selected*/}
                 <div className="col-lg-3 overflow-auto" style={{height: this.state.height}}>
                     <div className="container-fluid">
-                        <h1>Trending {this.state.country != "" ? ` in ${this.state.country}` : ""}</h1>
+                        <h1>Trending {this.state.country !== "" ? ` in ${this.state.country}` : ""}</h1>
                         {
-                            this.state.videos.length != 0 ?
+                            this.state.videos.length !== 0 ?
                                 this.state.videos.map(
                                     video => {
                                         return <VideoComponent size="row-lg" key={video.vid} video={video} />
@@ -126,12 +122,10 @@ class MapComponent extends React.Component {
                                 <p>Select a country to see trending videos</p>
                         }
                     </div>
-
                 </div>
             </div>
         );
     }
 }
-
 
 export default MapComponent
