@@ -3,7 +3,6 @@
 // - https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/geocoding-simple
 import React, {createRef} from "react";
 import {API_KEY} from "../resources/Keys"
-import {COUNTRIES} from "../resources/MockData";
 import DataService from "../services/DataService"
 
 class MapComponent extends React.Component {
@@ -17,7 +16,6 @@ class MapComponent extends React.Component {
     }
 
     createGoogleMap() {
-        // TODO: change center
         return new window.google.maps.Map(this.state.googleMapRef.current, {
             zoom: 3,
             center: {
@@ -44,7 +42,7 @@ class MapComponent extends React.Component {
         //     content: "Meh"
         // });
 
-
+        // Create marker
         let marker = new window.google.maps.Marker({
             position: position,
             map: map,
@@ -74,19 +72,21 @@ class MapComponent extends React.Component {
         googleScript.addEventListener("load", () => {
             this.googleMap = this.createGoogleMap();
 
+            // Placeholder for toal views
             const TEMP_VIEWS = 330000;
 
+            // Get countries
             DataService.getCountries().then(
                 response => {
-                    let countries = response.data;
+                    const COUNTRIES = response.data;
 
                     // Add markers
-                    for (let country in countries) {
+                    for (let country in COUNTRIES) {
                         let position = {
-                            lat: parseFloat(countries[country].latitude),
-                            lng: parseFloat(countries[country].longitude)
+                            lat: parseFloat(COUNTRIES[country].latitude),
+                            lng: parseFloat(COUNTRIES[country].longitude)
                         }
-                        this.createMarker(this.googleMap, countries[country].name, position, TEMP_VIEWS);
+                        this.createMarker(this.googleMap, COUNTRIES[country].name, position, TEMP_VIEWS);
                     }
                 }
             )

@@ -1,0 +1,2 @@
+const PROXY = "https://cors-anywhere.herokuapp.com/"
+export const URL = `${PROXY}<ENDPOINTS_API_SERVICE>`;

@@ -3,13 +3,13 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 import DataService from "../services/DataService"
-import {VIDEOS} from "../resources/MockData";
 
 class HistoryComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            cid: "",
             country: "",
             form: {
                 country: "",
@@ -31,57 +31,61 @@ class HistoryComponent extends React.Component {
                         countries: response.data
                     }
                 });
-
-                console.log("Imported countries!!!");
             }
         );
     }
 
     // Every trending videos of the selected country
     renderVideos() {
-        let country = this.state.country;
-
         let videos = [];
 
-        // TODO: Get reallll dataaaaaaa
-        if (VIDEOS[country] != null) {
-            for (let id in VIDEOS[country]) {
-                videos.push(
-                    <div key={id} className="col-lg-6 mt-2 mb-2">
-                        <Link to=
-                            {{
-                                pathname: `/history/${id}`,
-                                state: {
-                                    name: VIDEOS[country][id].name
-                                }
-                            }}
-                        >
-                            <div className="card">
-                                <iframe className="card-img-top"
-                                    title={id}
-                                    width="560" height="315"
-                                    src={`https://www.youtube.com/embed/${id}`}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
+        DataService.getAllTrendingVideos(this.state.cid).then(
+            response => {
+                const VIDEOS = response.data;
+
+                // TODO: VideoComponent
+                if (VIDEOS != null) {
+                    for (let video in VIDEOS) {
+                        videos.push(
+                            <div key={video.id} className="col-lg-6 mt-2 mb-2">
+                                <Link to=
+                                    {{
+                                        pathname: `/history/${video.id}`,
+                                        state: {
+                                            name: video.name
+                                        }
+                                    }}
                                 >
-                                </iframe>
-                                <div className="card-body">
-                                    <div className="card-text">{VIDEOS[country][id].name}</div>
-                                </div>
+                                    <div className="card">
+                                        <iframe className="card-img-top"
+                                            title={video.id}
+                                            width="560" height="315"
+                                            src={`https://www.youtube.com/embed/${video.id}`}
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        >
+                                        </iframe>
+                                        <div className="card-body">
+                                            <div className="card-text">{video.name}</div>
+                                        </div>
+                                    </div>
+                                </Link>
                             </div>
-                        </Link>
-                    </div>
-                );
+                        );
+                    }
+                }
             }
-        }
+        )
 
         return videos;
     }
 
+    // Update state according to user input
     handleChange(event) {
         let countries = this.state.form.countries;
         this.setState({
+            cid: event.target.key,
             form: {
                 country: event.target.value,
                 countries: countries
@@ -101,6 +105,7 @@ class HistoryComponent extends React.Component {
 
         return (
             <div>
+                {/*Form*/}
                 <div className="container-fluid">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-row">
@@ -124,6 +129,7 @@ class HistoryComponent extends React.Component {
                         </form>
                 </div>
 
+                {/*Videos*/}
                 <div className="container-fluid">
                     <div className="row">
                         {videos}
