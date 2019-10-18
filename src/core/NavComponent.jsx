@@ -4,10 +4,12 @@ import {Link} from "react-router-dom";
 class NavComponent extends React.Component {
     render() {
         return (
-            <nav className="nav-bar">
+            <nav className="navbar navbar-default">
+                <a class="navbar-brand mb-0 h1" href="#">Trending Videos Map</a>
+
                 <ul className="nav">
-                    <li className="nav-item"><Link className="nav-link" to="/map">Map</Link></li>
-                    <li className="nav-item"><Link className="nav-link" to="/history">History</Link></li>
+                    <li className="nav-item active"><Link className="nav-link" to="/map">Map</Link></li>
+                    <li className="nav-item active"><Link className="nav-link" to="/history">History</Link></li>
                 </ul>
             </nav>
         );

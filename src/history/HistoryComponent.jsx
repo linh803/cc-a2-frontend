@@ -1,6 +1,5 @@
 // Ref: https://reactjs.org/docs/forms.html
 import React from "react";
-import {Link} from "react-router-dom";
 
 import DataService from "../services/DataService"
 import VideoComponent from "../video/VideoComponent"
@@ -24,18 +23,15 @@ class HistoryComponent extends React.Component {
 
     componentDidMount() {
         // Init list of countries
-        console.log("State: " + this.state.form.countries);
-        // if (this.state.form.countries.length == 0) {
-            DataService.getCountries().then(
-                response => {
-                    this.setState({
-                        form: {
-                            countries: response.data
-                        }
-                    });
-                }
-            );
-        // }
+        DataService.getCountries().then(
+            response => {
+                this.setState({
+                    form: {
+                        countries: response.data
+                    }
+                });
+            }
+        );
     }
 
     // Update state according to user input

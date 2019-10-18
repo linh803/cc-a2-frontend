@@ -10,6 +10,7 @@ class MapComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            country: "",
             videos: [],
             googleMapRef: createRef(),
             width: window.innerWidth,
@@ -28,7 +29,7 @@ class MapComponent extends React.Component {
         })
     }
 
-    createMarker(map, cid, position, views){
+    createMarker(map, cid, country, position, views){
         // Set scale
         const DEFAULT_SCALE = 1/100000;
         const MIN_SCALE = 10;
@@ -55,11 +56,11 @@ class MapComponent extends React.Component {
         });
 
         marker.addListener("click", () => {
-            // infowindow.open(map, marker);
             // Show trending videos
             DataService.getTopTrendingVideos(cid).then(
                 response => {
                     this.setState({
+                        country: country,
                         videos: response.data
                     })
                 }
@@ -90,7 +91,7 @@ class MapComponent extends React.Component {
                             lat: parseFloat(COUNTRIES[country].latitude),
                             lng: parseFloat(COUNTRIES[country].longitude)
                         }
-                        this.createMarker(this.googleMap, COUNTRIES[country].cid, position, TEMP_VIEWS);
+                        this.createMarker(this.googleMap, COUNTRIES[country].cid, COUNTRIES[country].name, position, TEMP_VIEWS);
                     }
                 }
             )
@@ -104,20 +105,28 @@ class MapComponent extends React.Component {
     render() {
         return (
             <div className="row">
-                <div className="col-lg-9 mt-2 mb-2"
+                {/*Map*/}
+                <div className="col-lg-9"
                     id="google-map"
                     ref={this.state.googleMapRef}
                     style={{ width: this.state.width, height: this.state.height }}
                 />
-                <div className="col-lg-3">
-                    {/*Display video if a country is selected*/}
-                    {
-                        this.state.videos.map(
-                            video => {
-                                return <VideoComponent size="row-lg" key={video.vid} video={video} />
-                            }
-                        )
-                    }
+
+                {/*Display video if a country is selected*/}
+                <div className="col-lg-3 overflow-auto" style={{height: this.state.height}}>
+                    <div className="container-fluid">
+                        <h1>Trending {this.state.country != "" ? ` in ${this.state.country}` : ""}</h1>
+                        {
+                            this.state.videos.length != 0 ?
+                                this.state.videos.map(
+                                    video => {
+                                        return <VideoComponent size="row-lg" key={video.vid} video={video} />
+                                    }
+                                ) :
+                                <p>Select a country to see trending videos</p>
+                        }
+                    </div>
+
                 </div>
             </div>
         );

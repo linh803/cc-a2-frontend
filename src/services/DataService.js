@@ -20,4 +20,4 @@ class DataService {
     }
 }
 
-export default new DataService
+export default new DataService()

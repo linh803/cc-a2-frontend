@@ -4,10 +4,9 @@ import {Link} from "react-router-dom";
 class VideoComponent extends React.Component {
     render() {
         let thumb_url = "http://img.youtube.com/vi/" + this.props.video.vid + "/maxresdefault.jpg";
-        let size = this.props.size + " " + "mt-2 mb-2";
 
         return (
-            <div className={size}>
+            <div className={`${this.props.size} mt-2 mb-2 ml-2 mr-2`}>
                 <Link to=
                     {{
                         pathname: `/history/${this.props.video.vid}`,
@@ -29,7 +28,7 @@ class VideoComponent extends React.Component {
                         </iframe>
                         */}
 
-                        <img className="card-img-top" src={thumb_url}/>
+                        <img className="card-img-top" src={thumb_url} alt="thumbnail"/>
 
                         {/*Title*/}
                         <div className="card-body">
