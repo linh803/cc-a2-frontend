@@ -2,45 +2,36 @@
 import React from "react";
 import Chart from "react-google-charts";
 
-import {VIDEO_DETAILS} from "../resources/MockData"
+import DataService from "../services/DataService"
 
 class GraphComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             vid: "",
-            name: ""
+            name: "",
+            videoViews: []
         }
     }
 
     componentDidMount() {
-        this.setState({
-            vid: this.props.match.params.vid,
-            name: this.props.location.state.name
-        });
+        DataService.getVideoViews(this.props.match.params.vid).then(
+            response => {
+                this.setState({
+                    vid: this.props.match.params.vid,
+                    name: this.props.location.state.name,
+                    videoViews: response.data
+                });
+            }
+        )
     }
 
     render() {
         // data
         let data = [['time', 'views']];
-        // [
-        //     ['time', 'views'],
-        //     [0, 0],
-        //     [1, 10],
-        //     [2, 23],
-        //     [3, 17],
-        //     [4, 18],
-        //     [5, 9],
-        //     [6, 11],
-        //     [7, 27],
-        //     [8, 33],
-        //     [9, 40],
-        //     [10, 32],
-        //     [11, 35],
-        // ]
 
-        for (let index in VIDEO_DETAILS) {
-            data.push([VIDEO_DETAILS[index].date, VIDEO_DETAILS[index].views]);
+        for (let index in this.state.videoViews) {
+            data.push([this.state.videoViews[index].date, this.state.videoViews[index].views]);
         }
 
         return (

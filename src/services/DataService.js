@@ -15,7 +15,7 @@ class DataService {
         return axios.get(`${URL}/alltrendingvideos?cid=${cid}`);
     }
 
-    getVideoDetails(vid) {
+    getVideoViews(vid) {
         return axios.get(`${URL}/videoviews?vid=${vid}`);
     }
 }
