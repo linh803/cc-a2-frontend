@@ -2,6 +2,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
+import DataService from "../services/DataService"
 import {VIDEOS} from "../resources/MockData";
 
 class HistoryComponent extends React.Component {
@@ -11,38 +12,41 @@ class HistoryComponent extends React.Component {
         this.state = {
             country: "",
             form: {
-                country: ""
+                country: "",
+                countries: []
             }
         }
 
+        this.renderVideos = this.renderVideos.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({
-            form: {
-                country: event.target.value
+    componentDidMount() {
+        // Init list of countries
+        DataService.getCountries().then(
+            response => {
+                this.setState({
+                    form: {
+                        countries: response.data
+                    }
+                });
+
+                console.log("Imported countries!!!");
             }
-        });
+        );
     }
 
-    handleSubmit(event) {
-        this.setState({
-            country: this.state.form.country
-        })
-        event.preventDefault();
-    }
-
-    render() {
+    // Every trending videos of the selected country
+    renderVideos() {
         let country = this.state.country;
 
-        let content = [];
+        let videos = [];
 
         // TODO: Get reallll dataaaaaaa
         if (VIDEOS[country] != null) {
             for (let id in VIDEOS[country]) {
-                content.push(
+                videos.push(
                     <div key={id} className="col-lg-6 mt-2 mb-2">
                         <Link to=
                             {{
@@ -72,13 +76,45 @@ class HistoryComponent extends React.Component {
             }
         }
 
+        return videos;
+    }
+
+    handleChange(event) {
+        let countries = this.state.form.countries;
+        this.setState({
+            form: {
+                country: event.target.value,
+                countries: countries
+            }
+        });
+    }
+
+    handleSubmit(event) {
+        this.setState({
+            country: this.state.form.country
+        })
+        event.preventDefault();
+    }
+
+    render() {
+        let videos = this.renderVideos();
+
         return (
             <div>
                 <div className="container-fluid">
                     <form onSubmit={this.handleSubmit}>
-                        <div class="form-row">
+                        <div className="form-row">
                             <div className="col">
-                                <input type="text" className="form-control form-control-lg mr-2" placeholder="Enter a country :)" value={this.state.form.country} onChange={this.handleChange} />
+                                <input list="countries" type="text" className="form-control form-control-lg mr-2" placeholder="Enter a country :)" onChange={this.handleChange} />
+                                    <datalist id="countries">
+                                        {
+                                            this.state.form.countries.map(
+                                                country => {
+                                                    return <option key={country.cid} value={country.name} />
+                                                }
+                                            )
+                                        }
+                                    </datalist>
                             </div>
 
                             <div className="col">
@@ -90,7 +126,7 @@ class HistoryComponent extends React.Component {
 
                 <div className="container-fluid">
                     <div className="row">
-                        {content}
+                        {videos}
                     </div>
                 </div>
             </div>

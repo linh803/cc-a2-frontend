@@ -4,7 +4,7 @@ import {URL} from "../resources/Url"
 
 class DataService {
     getCountries() {
-        return axios.get(`${URL}/countryIDs`);
+        return axios.get(`${URL}/countryids`);
     }
 }
 
