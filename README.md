@@ -1,11 +1,11 @@
 # YouTube Trending Videos Map
 
 ## About
-This is the front end of the YouTube Trending Videos Map, which shows and keeps track of all trending videos of every country over the world.
+This is the front end of the YouTube Trending Videos Map, which shows and keeps track of all trending videos of every country in the world.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Backend repo: https://github.com/s3688394/cc-ass2-yt-api
+The backend repo can be found [here](https://github.com/s3688394/cc-ass2-yt-api).
 
 ## Local Development Instructions
 ### `npm start`
@@ -67,4 +67,4 @@ Before starting, ensure that you have a Google account and have created a billin
 6. Deploy the project to App Engine by running the following in a terminal:
     - `gcloud app deploy`
 
-The map is now deployed. The website URL can be found in the Project's Dashboard.
+The map is now deployed. The website's URL can be found in the Project's Dashboard.
