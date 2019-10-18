@@ -4,11 +4,13 @@
 import React, {createRef} from "react";
 import {API_KEY} from "../resources/Keys"
 import DataService from "../services/DataService"
+import VideoComponent from "../video/VideoComponent"
 
 class MapComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            videos: [],
             googleMapRef: createRef(),
             width: window.innerWidth,
             height: window.innerHeight
@@ -26,7 +28,7 @@ class MapComponent extends React.Component {
         })
     }
 
-    createMarker(map, country, position, views){
+    createMarker(map, cid, position, views){
         // Set scale
         const DEFAULT_SCALE = 1/100000;
         const MIN_SCALE = 10;
@@ -38,15 +40,11 @@ class MapComponent extends React.Component {
             scale = MIN_SCALE;
         }
 
-        // let infowindow = new window.google.maps.InfoWindow({
-        //     content: "Meh"
-        // });
-
         // Create marker
         let marker = new window.google.maps.Marker({
             position: position,
             map: map,
-            title: views + " views",
+            title: cid,
             icon: {
                 path: window.google.maps.SymbolPath.CIRCLE,
                 fillColor: "red",
@@ -56,10 +54,16 @@ class MapComponent extends React.Component {
             }
         });
 
-        // TODO: addEventListener OR tooltip OR something else that i don't remember the name of
         marker.addListener("click", () => {
             // infowindow.open(map, marker);
             // Show trending videos
+            DataService.getTopTrendingVideos(cid).then(
+                response => {
+                    this.setState({
+                        videos: response.data
+                    })
+                }
+            )
         })
     }
 
@@ -86,20 +90,36 @@ class MapComponent extends React.Component {
                             lat: parseFloat(COUNTRIES[country].latitude),
                             lng: parseFloat(COUNTRIES[country].longitude)
                         }
-                        this.createMarker(this.googleMap, COUNTRIES[country].name, position, TEMP_VIEWS);
+                        this.createMarker(this.googleMap, COUNTRIES[country].cid, position, TEMP_VIEWS);
                     }
                 }
             )
         })
+
+        // window.onresize = () => {
+        //     this.setState();
+        // }
     }
 
     render() {
         return (
-            <div
-                id="google-map"
-                ref={this.state.googleMapRef}
-                style={{ width: this.state.width, height: this.state.height }}
-            />
+            <div className="row">
+                <div className="col-lg-9 mt-2 mb-2"
+                    id="google-map"
+                    ref={this.state.googleMapRef}
+                    style={{ width: this.state.width, height: this.state.height }}
+                />
+                <div className="col-lg-3">
+                    {/*Display video if a country is selected*/}
+                    {
+                        this.state.videos.map(
+                            video => {
+                                return <VideoComponent size="row-lg" key={video.vid} video={video} />
+                            }
+                        )
+                    }
+                </div>
+            </div>
         );
     }
 }
