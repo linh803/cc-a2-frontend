@@ -1,4 +1,4 @@
-// Ref: https://developers.google.com/chart/interactive/docs/gallery/linechart
+// Ref: https://react-google-charts.com/
 import React from "react";
 import Chart from "react-google-charts";
 

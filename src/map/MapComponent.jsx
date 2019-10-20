@@ -1,6 +1,4 @@
-// Refs:
-// - https://engineering.universe.com/building-a-google-map-in-react-b103b4ee97f1
-// - https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/geocoding-simple
+// Refs: https://engineering.universe.com/building-a-google-map-in-react-b103b4ee97f1
 import React, {createRef} from "react";
 import {API_KEY} from "../resources/Keys"
 import DataService from "../services/DataService"

@@ -50,7 +50,7 @@ Before starting, ensure that you have a Google account and have created a billin
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## Deploy to Google Cloud
+### Deploy to Google Cloud
 1. Configure the project ID by running the following in a terminal:
     - `gcloud config set project <PROJECT_ID>`
 2. Deploy the project to App Engine by running the following in a terminal:

@@ -19,7 +19,7 @@ class VideoComponent extends React.Component {
                         <img className="card-img-top" src={thumb_url} alt="thumbnail"/>
 
                         <div className="card-body">
-                            <div className="card-text"><h3>{this.props.video.name}</h3></div>
+                            <div className="card-text"><h5>{this.props.video.name}</h5></div>
                         </div>
                     </div>
                 </Link>
